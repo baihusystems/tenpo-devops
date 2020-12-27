@@ -1,21 +1,22 @@
 apiVersion: "apps/v1"
 kind: "Deployment"
 metadata:
+  name: {{ .Values.appName }}
+  namespace: "default"
   labels:
     app: {{ .Values.appName }}
-  name: {{ .Values.appName }}
 spec:
+  replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ .Values.appName }}
-  replicas: 1
+      app: {{ .Values.appName }}
   template:
     metadata:
       labels:
         app: {{ .Values.appName }}
     spec:
       containers:
-      - name: {{ .Values.appName }}
+      - name: "node-tenpo-api-sha256-1"
         image: {{ .Values.appName }}
         env:
         - name: "TENPO_SECRET"
