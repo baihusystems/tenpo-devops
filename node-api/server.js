@@ -1,26 +1,31 @@
-const ronin = require('ronin-server');
-const mocks = require('ronin-mocks');
+const express = require("express");
+const bodyParser = require("body-parser");
+const app = express();
+const db = require("./models");
 
-const server = ronin.server();
+// parse requests of content-type - application/json
+app.use(bodyParser.json());
 
-const { Pool } = require('pg');
-const pool = new Pool({
-    user: 'postgres',
-    host: '34.69.155.244',
-    database: 'postgres',
-    password: 'postgres',
-    port: 5432,
+// parse requests of content-type - application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
+
+db.sequelize.sync();
+// force: true will drop the table if it already exists
+/*db.sequelize.sync({ force: true }).then(() => {
+    console.log('Drop and Resync Database with { force: true }');
+});*/
+
+// Base Route
+app.get("/", (req, res) => {
+    res.json({ message: "Tenpo-Asalazar" });
 });
 
-let query = () => {
-    setInterval(() => {
-        pool.query('SELECT NOW()', (err, res) => {
-            console.log(err, res);
-        })
-    }, 5000);
-};
+// routes
+require('./routes/auth.routes')(app);
+require('./routes/user.routes')(app);
 
-query();
-
-server.use('/', mocks.server(server.Router(), false, true));
-server.start();
+// set port, listen for requests
+const PORT = process.env.PORT || 8082;
+app.listen(PORT, () => {
+    console.log(`Server is in ${process.env.TENPO_ENV} mode, running on port ${PORT}.`);
+});
