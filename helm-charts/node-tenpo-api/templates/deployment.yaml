@@ -2,7 +2,7 @@ apiVersion: "apps/v1"
 kind: "Deployment"
 metadata:
   labels:
-    app: "node-tenpo-api"
+    app: {{ .Values.appName }}
   name: {{ .Values.appName }}
 spec:
   replicas: 1

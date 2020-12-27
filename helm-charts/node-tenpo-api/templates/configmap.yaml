@@ -4,7 +4,7 @@ metadata:
   name: "node-tenpo-api-config-zefc"
   namespace: "default"
   labels:
-    app: "node-tenpo-api"
+    app: {{ .Values.appName }}
 data:
   TENPO_SECRET: "1234567890"
   TENPO_PASSW_LEN: "5"

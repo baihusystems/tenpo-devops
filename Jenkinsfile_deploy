@@ -29,13 +29,14 @@ pipeline{
         string (name:'artifactID', defaultValue: 'node-tenpo-api', description: 'Artifact Name')
         choice(name: 'region', choices: ['us-east1'], description: 'Region')
         choice(name: 'namespace', choices: ['default'], description: 'Namespace')
-        string (name:'appVersion', defaultValue: '', description: 'App Version')
+        string (name:'appVersion', defaultValue: '1.0.0_11', description: 'App Version')
     }
 
     environment {
-        appName = ""
+        appDir = ""
         appYamlFilename  = ""
         valuesFilename  = ""
+        GCLOUD_PATH='/var/jenkins_home/gcloud-sdk/google-cloud-sdk/bin'
 
     }
     stages{
@@ -46,8 +47,8 @@ pipeline{
                 script {
                     customCheckout("${branchName}", "${params.repoUrl}", "${params.repoCredentials}")
 
-                    appName = "${clusterName}/${namespace}/${artifactID}"
-                    appYamlFilename  = appDir.replaceALL ('/', '-')
+                    appDir = "${clusterName}/${namespace}/${artifactID}"
+                    appYamlFilename  = appDir.replaceAll ('/', '-')
                     valuesFilename = appYamlFilename + '-values'
 
                 }
@@ -56,12 +57,12 @@ pipeline{
         stage ("Testing Create Yaml"){
             steps{
                 dir("helm-charts"){
-                    withEnv(['GCLOUD_PATH=/var/jenkins_home/gcloud-sdk/google-cloud-sdk/bin']) {
-                        imageSha = sh (script: "$GCLOUD_PATH/gcloud container images describe  us.gcr.io/${projectId}/${artifactID}:${appVersion} --format='value(image_summary.fully_qualified_digest)'", returnStdout:true).trim()
+                    script {
+                        imageSha = sh (script: "${GCLOUD_PATH}/gcloud container images describe  us.gcr.io/${projectId}/${artifactID}:${appVersion} --format='value(image_summary.fully_qualified_digest)'", returnStdout:true).trim()
 
                         echo "Sha is ${imageSha}"
 
-                        sh "$GCLOUD_PATH/gcloud info"
+                        sh "${GCLOUD_PATH}/gcloud info"
                         sh "helm repo remove stable | echo \"already removed\""
                         sh "helm repo remove local | echo \"already removed\""
                         sh "helm dependency up ${artifactId}"
@@ -70,7 +71,6 @@ pipeline{
                         sh "helm template ${artifactId} --name ${artifactId} --values=${artifactId}/${valuesFilename}.yaml  --set imageSha=${imgeSha} --set appVersion=${appVersion} > ${WORKSPACE}/${appDir}/${appYamlFilename}.yaml "
 
                         sh "cat ${WORKSPACE}/${appDir}/${appYamlFilename}.yaml"
-
                     }
                 }
             }
