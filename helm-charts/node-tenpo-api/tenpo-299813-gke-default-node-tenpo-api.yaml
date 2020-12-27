@@ -1,4 +1,3 @@
-appName: "node-tenpo-api"
 imageSha: ""
 lb:
   port: 80
