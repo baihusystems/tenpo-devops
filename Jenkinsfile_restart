@@ -1,0 +1,32 @@
+pipeline{
+    agent {
+        label "master"
+    }
+
+    parameters {
+        choice(name: 'projectId', choices: ['tenpo-299813'], description: 'ProjectID')
+        choice(name: 'clusterName', choices: ['tenpo-299813-gke'], description: 'ClusterName')
+        choice(name: 'podName', choices: ['tenpo-node'], description: 'Pod Name')
+        choice(name: 'region', choices: ['us-east1'], description: 'Region')
+        choice(name: 'namespace', choices: ['default'], description: 'Namespace')
+    }
+
+    stages{
+        stage ("preparation"){
+            steps{
+                echo "Deleting workspace..."
+                deleteDir()
+            }
+        }
+        stage ("Restarting"){
+            steps {
+                withEnv(['GCLOUD_PATH=/var/jenkins_home/gcloud-sdk/google-cloud-sdk/bin']) {
+                    sh "$GCLOUD_PATH/gcloud container clusters get-credentials ${clusterName} --region ${region} --project ${projectId}"
+                    sh "$GCLOUD_PATH/kubectl get deployments ${podName} -n default"
+                    sh "$GCLOUD_PATH/kubectl rollout restart deployment ${podName} -n default"
+                    echo "Pod Restarted..."
+                }
+            }
+        }
+    }
+}
