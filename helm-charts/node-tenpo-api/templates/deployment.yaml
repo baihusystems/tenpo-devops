@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: "node-tenpo-api-sha256-1"
-        image: {{ .Values.appName }}
+        image: {{ .Values.imageSha }}
         env:
         - name: "TENPO_SECRET"
           valueFrom:
