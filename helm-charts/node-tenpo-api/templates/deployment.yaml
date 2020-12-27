@@ -19,34 +19,37 @@ spec:
           valueFrom:
             configMapKeyRef:
               key: "TENPO_SECRET"
-              name: {{ .Values.appName }}-config-zefc
+              name: "{{ printf "%s-config-zefc" .Values.appName  }}"
         - name: "TENPO_PASSW_LEN"
           valueFrom:
             configMapKeyRef:
               key: "TENPO_PASSW_LEN"
-              name: {{ .Values.appName }}-config-zefc
+              name: "{{ printf "%s-config-zefc" .Values.appName  }}"
         - name: "TENPO_DB_IP"
           valueFrom:
             configMapKeyRef:
               key: "TENPO_DB_IP"
-              name: {{ .Values.appName }}-config-zefc
+              name: "{{ printf "%s-config-zefc" .Values.appName  }}"
         - name: "TENPO_DB_USER"
           valueFrom:
             configMapKeyRef:
               key: "TENPO_DB_USER"
-              name: {{ .Values.appName }}-config-zefc
+              name: "{{ printf "%s-config-zefc" .Values.appName  }}"
         - name: "TENPO_DB_PASSW"
           valueFrom:
             configMapKeyRef:
               key: "TENPO_DB_PASSW"
-              name: {{ .Values.appName }}-config-zefc
+              name: "{{ printf "%s-config-zefc" .Values.appName  }}"
         - name: "TENPO_DB"
           valueFrom:
             configMapKeyRef:
               key: "TENPO_DB"
-              name: {{ .Values.appName }}-config-zefc
+              name: "{{ printf "%s-config-zefc" .Values.appName  }}"
         - name: "TENPO_ENV"
           valueFrom:
             configMapKeyRef:
               key: "TENPO_ENV"
-              name: {{ .Values.appName }}-config-zefc
+              name: "{{ printf "%s-config-zefc" .Values.appName  }}"
+
+
+              
