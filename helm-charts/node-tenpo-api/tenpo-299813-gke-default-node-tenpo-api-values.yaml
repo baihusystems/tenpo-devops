@@ -1,7 +1,7 @@
 appName: "node-tenpo-api"
 imageSha: ""
 lb:
-  port: 80
-  targetPort: 8082
+  port: "80"
+  targetPort: "8082"
   protocol: TCP
   name: http

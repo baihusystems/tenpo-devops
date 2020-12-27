@@ -75,7 +75,7 @@ pipeline{
                 dir("${appDir}"){
                     script{
                         sh "${GCLOUD_PATH}/gcloud container clusters get-credentials ${clusterName} --region ${region} --project ${projectId}"
-                        sh "kubectl apply --dry-run=client -n ${namespace} -f ."
+                        sh "${GCLOUD_PATH}/kubectl apply --dry-run=client -n ${namespace} -f ."
                     }
                 }
             }
