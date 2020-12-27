@@ -1,0 +1,79 @@
+
+def customCheckout (branch, repo, credentials){
+    echo "Cloning ${branch} from ${repo}"
+
+    checkout([
+        $class: 'GitSCM'
+        , branches: [[name: "*/${branch}"]]
+        , doGenerateSubmoduleConfigurations: false
+        , extensions: []
+        , submoduleCfg: []
+        , userRemoteConfigs: [[
+            credentialsId: "${credentials}"
+            , url: "${repo}"
+        ]]
+    ])
+}
+
+pipeline{
+    agent {
+        label "master"
+    }
+
+    parameters {
+        string (name:'repoUrl', defaultValue: 'https://github.com/baihusystems/tenpo-devops.git', description: 'URL Repo')
+        string (name:'repoCredentials', defaultValue: 'tenpo-github-app', description: 'Credentials Repo')
+        string (name:'branchName', defaultValue: 'main', description: 'Branch Checkout')
+        choice(name: 'projectId', choices: ['tenpo-299813'], description: 'ProjectID')
+        choice(name: 'clusterName', choices: ['tenpo-299813-gke'], description: 'ClusterName')
+        string (name:'artifactID', defaultValue: 'node-tenpo-api', description: 'Artifact Name')
+        choice(name: 'region', choices: ['us-east1'], description: 'Region')
+        choice(name: 'namespace', choices: ['default'], description: 'Namespace')
+        string (name:'appVersion', defaultValue: '', description: 'App Version')
+    }
+
+    environment {
+        appName = ""
+        appYamlFilename  = ""
+        valuesFilename  = ""
+
+    }
+    stages{
+        stage ("preparation"){
+            steps{
+                echo "Deleting workspace..."
+                deleteDir()
+                script {
+                    customCheckout("${branchName}", "${params.repoUrl}", "${params.repoCredentials}")
+
+                    appName = "${clusterName}/${namespace}/${artifactID}"
+                    appYamlFilename  = appDir.replaceALL ('/', '-')
+                    valuesFilename = appYamlFilename + '-values'
+
+                }
+            }
+        }
+        stage ("Testing Create Yaml"){
+            steps{
+                dir("helm-charts"){
+                    withEnv(['GCLOUD_PATH=/var/jenkins_home/gcloud-sdk/google-cloud-sdk/bin']) {
+                        imageSha = sh (script: "$GCLOUD_PATH/gcloud container images describe  us.gcr.io/${projectId}/${artifactID}:${appVersion} --format='value(image_summary.fully_qualified_digest)'", returnStdout:true).trim()
+
+                        echo "Sha is ${imageSha}"
+
+                        sh "$GCLOUD_PATH/gcloud info"
+                        sh "helm repo remove stable | echo \"already removed\""
+                        sh "helm repo remove local | echo \"already removed\""
+                        sh "helm dependency up ${artifactId}"
+                        sh "helm dependency build ${artifactId}"
+
+                        sh "helm template ${artifactId} --name ${artifactId} --values=${artifactId}/${valuesFilename}.yaml  --set imageSha=${imgeSha} --set appVersion=${appVersion} > ${WORKSPACE}/${appDir}/${appYamlFilename}.yaml "
+
+                        sh "cat ${WORKSPACE}/${appDir}/${appYamlFilename}.yaml"
+
+                    }
+                }
+            }
+        }
+    }
+}

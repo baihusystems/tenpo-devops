@@ -1,0 +1,52 @@
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  labels:
+    app: "node-tenpo-api"
+  name: {{ .Values.appName }}
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.appName }}
+    spec:
+      containers:
+      - name: {{ .Values.appName }}
+        image: {{ .Values.appName }}
+        env:
+        - name: "TENPO_SECRET"
+          valueFrom:
+            configMapKeyRef:
+              key: "TENPO_SECRET"
+              name: "{{ printf " %s-config-zefc" .Values.appName }}"
+        - name: "TENPO_PASSW_LEN"
+          valueFrom:
+            configMapKeyRef:
+              key: "TENPO_PASSW_LEN"
+              name: "{{ printf " %s-config-zefc" .Values.appName }}"
+        - name: "TENPO_DB_IP"
+          valueFrom:
+            configMapKeyRef:
+              key: "TENPO_DB_IP"
+              name: "{{ printf " %s-config-zefc" .Values.appName }}"
+        - name: "TENPO_DB_USER"
+          valueFrom:
+            configMapKeyRef:
+              key: "TENPO_DB_USER"
+              name: "{{ printf " %s-config-zefc" .Values.appName }}"
+        - name: "TENPO_DB_PASSW"
+          valueFrom:
+            configMapKeyRef:
+              key: "TENPO_DB_PASSW"
+              name: "{{ printf " %s-config-zefc" .Values.appName }}"
+        - name: "TENPO_DB"
+          valueFrom:
+            configMapKeyRef:
+              key: "TENPO_DB"
+              name: "{{ printf " %s-config-zefc" .Values.appName }}"
+        - name: "TENPO_ENV"
+          valueFrom:
+            configMapKeyRef:
+              key: "TENPO_ENV"
+              name: "{{ printf " %s-config-zefc" .Values.appName }}"

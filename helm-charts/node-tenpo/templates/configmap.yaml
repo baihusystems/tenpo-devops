@@ -1,0 +1,15 @@
+apiVersion: "v1"
+kind: "ConfigMap"
+metadata:
+  name: "node-tenpo-api-config-zefc"
+  namespace: "default"
+  labels:
+    app: "node-tenpo-api"
+data:
+  TENPO_SECRET: "1234567890"
+  TENPO_PASSW_LEN: "5"
+  TENPO_DB_IP: "35.227.21.57"
+  TENPO_DB_USER: "dbadmin"
+  TENPO_DB_PASSW: "3353373723f594a1"
+  TENPO_DB: "postgres"
+  TENPO_ENV: "prod"
