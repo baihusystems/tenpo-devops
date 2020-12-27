@@ -4,11 +4,11 @@ ENV NODE_ENV=production
 
 WORKDIR /usr/src/app
 
-COPY /node-api/package*.json ./
+COPY /node-api-pg/package*.json ./
 RUN npm install --production
 
-COPY /node-api/. .
+COPY /node-api-pg/. .
 
-EXPOSE 8000
+EXPOSE 8082
 CMD [ "node", "server.js" ]
 
