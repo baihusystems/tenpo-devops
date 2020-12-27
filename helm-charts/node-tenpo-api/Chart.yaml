@@ -1,2 +1,5 @@
-appName: "node-tenpo-api"
-name: ""
+apiVersion: v1
+appVersion: "1.0"
+description: Helm Chart
+name: "node-tenpo-api"
+version: 0.1.0
