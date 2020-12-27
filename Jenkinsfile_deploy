@@ -58,17 +58,12 @@ pipeline{
             steps{
                 dir("helm-charts"){
                     script {
+                        sh "if [ ! -d ${WORKSPACE}/${appDir} ]; then mkdir -p ${WORKSPACE}/${appDir}; fi "
                         imageSha = sh (script: "${GCLOUD_PATH}/gcloud container images describe  us.gcr.io/${projectId}/${artifactID}:${appVersion} --format='value(image_summary.fully_qualified_digest)'", returnStdout:true).trim()
 
                         echo "Sha is ${imageSha}"
 
-                        sh "${GCLOUD_PATH}/gcloud info"
-                        sh "helm repo remove stable | echo \"already removed\""
-                        sh "helm repo remove local | echo \"already removed\""
-                        sh "helm dependency up ${artifactId}"
-                        sh "helm dependency build ${artifactId}"
-
-                        sh "helm template ${artifactId} --name ${artifactId} --values=${artifactId}/${valuesFilename}.yaml  --set imageSha=${imgeSha} --set appVersion=${appVersion} > ${WORKSPACE}/${appDir}/${appYamlFilename}.yaml "
+                        sh "helm template ${artifactId} ${artifactId} --values=${artifactId}/${valuesFilename}.yaml  --set imageSha=${imageSha} --set appVersion=${appVersion} > ${WORKSPACE}/${appDir}/${appYamlFilename}.yaml "
 
                         sh "cat ${WORKSPACE}/${appDir}/${appYamlFilename}.yaml"
                     }
