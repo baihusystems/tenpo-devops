@@ -1,14 +1,11 @@
 FROM node:15
 
-ENV NODE_ENV=production
-
 WORKDIR /usr/src/app
 
-COPY /node-api-pg/package*.json ./
+COPY /node-api/package*.json ./
 RUN npm install --production
 
-COPY /node-api-pg/. .
+COPY /node-api/. .
 
 EXPOSE 8082
 CMD [ "node", "server.js" ]
-
