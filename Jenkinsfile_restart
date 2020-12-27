@@ -6,7 +6,7 @@ pipeline{
     parameters {
         choice(name: 'projectId', choices: ['tenpo-299813'], description: 'ProjectID')
         choice(name: 'clusterName', choices: ['tenpo-299813-gke'], description: 'ClusterName')
-        choice(name: 'podName', choices: ['tenpo-node'], description: 'Pod Name')
+        choice(name: 'podName', choices: ['node-tenpo-api'], description: 'Pod Name')
         choice(name: 'region', choices: ['us-east1'], description: 'Region')
         choice(name: 'namespace', choices: ['default'], description: 'Namespace')
     }

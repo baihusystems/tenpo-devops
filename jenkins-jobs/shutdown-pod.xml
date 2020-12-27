@@ -1,0 +1,98 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.40">
+  <actions>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobAction plugin="pipeline-model-definition@1.7.2"/>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction plugin="pipeline-model-definition@1.7.2">
+      <jobProperties/>
+      <triggers/>
+      <parameters>
+        <string>clusterName</string>
+        <string>namespace</string>
+        <string>podName</string>
+        <string>region</string>
+        <string>projectId</string>
+      </parameters>
+      <options/>
+    </org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction>
+  </actions>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.ChoiceParameterDefinition>
+          <name>projectId</name>
+          <description>ProjectID</description>
+          <choices>
+            <string>tenpo-299813</string>
+          </choices>
+        </hudson.model.ChoiceParameterDefinition>
+        <hudson.model.ChoiceParameterDefinition>
+          <name>clusterName</name>
+          <description>ClusterName</description>
+          <choices>
+            <string>tenpo-299813-gke</string>
+          </choices>
+        </hudson.model.ChoiceParameterDefinition>
+        <hudson.model.ChoiceParameterDefinition>
+          <name>podName</name>
+          <description>Pod Name</description>
+          <choices>
+            <string>tenpo-node</string>
+          </choices>
+        </hudson.model.ChoiceParameterDefinition>
+        <hudson.model.ChoiceParameterDefinition>
+          <name>region</name>
+          <description>Region</description>
+          <choices>
+            <string>us-east1</string>
+          </choices>
+        </hudson.model.ChoiceParameterDefinition>
+        <hudson.model.ChoiceParameterDefinition>
+          <name>namespace</name>
+          <description>Namespace</description>
+          <choices>
+            <string>default</string>
+          </choices>
+        </hudson.model.ChoiceParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.87">
+    <script>pipeline{
+    agent {
+        label &quot;master&quot;
+    }
+
+    parameters {
+        choice(name: &apos;projectId&apos;, choices: [&apos;tenpo-299813&apos;], description: &apos;ProjectID&apos;)
+        choice(name: &apos;clusterName&apos;, choices: [&apos;tenpo-299813-gke&apos;], description: &apos;ClusterName&apos;)
+        choice(name: &apos;podName&apos;, choices: [&apos;tenpo-node&apos;], description: &apos;Pod Name&apos;)
+        choice(name: &apos;region&apos;, choices: [&apos;us-east1&apos;], description: &apos;Region&apos;)
+        choice(name: &apos;namespace&apos;, choices: [&apos;default&apos;], description: &apos;Namespace&apos;)
+    }
+
+    stages{
+        stage (&quot;preparation&quot;){
+            steps{
+                echo &quot;Deleting workspace...&quot;
+                deleteDir()
+            }
+        }
+        stage (&quot;Shutdown&quot;){
+            steps {
+                withEnv([&apos;GCLOUD_PATH=/var/jenkins_home/gcloud-sdk/google-cloud-sdk/bin&apos;]) {
+                    sh &quot;$GCLOUD_PATH/gcloud container clusters get-credentials ${clusterName} --region ${region} --project ${projectId}&quot;
+                    sh &quot;$GCLOUD_PATH/kubectl get deployments ${podName} -n default&quot;
+                    sh &quot;$GCLOUD_PATH/kubectl scale deployments ${podName} --replicas=0 -n default&quot;
+                    echo &quot;Pod Shutdown...&quot;
+                }
+            }
+        }
+    }
+}</script>
+    <sandbox>true</sandbox>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition>
