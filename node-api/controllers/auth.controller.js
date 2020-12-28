@@ -9,7 +9,7 @@ const userToken = db.userToken;
 exports.signup = (req, res) => {
     User.create({
             username: req.body.username,
-            password: bcrypt.hashSync(req.body.password, config.lengthPassword)
+            password: bcrypt.hashSync(req.body.password, parseInt(config.lengthPassword))
         })
         .then(user => {
             res.send({ message: `Usuario [${req.body.username}] Registrado Exitosamente` });
