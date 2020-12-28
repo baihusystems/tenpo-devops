@@ -25,6 +25,8 @@ $ node server.js
 ```
 
 ### Rutas
+GCP Enpoint: http://35.231.140.86:8082
+
 |Tipo| Ruta | Descripción |
 |------| ------ | ------ |
 |POST| /api/auth/signup | Registro de Usuario |
