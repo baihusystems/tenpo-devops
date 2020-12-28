@@ -1,7 +1,10 @@
-# Tenpo-devops
-por Alberto Salazar
 
-Tecnologias Utilizadas:
+# Tenpo-devops 
+> por **Alberto Salazar**
+
+
+
+### Tecnologias Utilizadas:
   - NodeJs: API REST de Registro, acceso y operaciones 
   - Docker: Dockerizacion de Aplicacion API REST
   - Groovy: Pipelines de build, push, deploy, restart y shutdown
