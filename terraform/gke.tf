@@ -27,7 +27,7 @@ resource "google_container_node_pool" "primary_nodes" {
   node_count = var.gke_num_nodes
 
   node_config {
-    service_account = "tenpo-tf-sa@tenpo-299813.iam.gserviceaccount.com"
+    service_account = var.gcp_serviceaccount
     oauth_scopes = [
      "storage-ro",
       "logging-write",

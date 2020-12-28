@@ -28,3 +28,8 @@ variable "app_name" {
   type = string
   description = "App Name"
 }
+
+variable "gcp_serviceaccount" {
+  type = string
+  description = "Service Account with Roles"
+}
