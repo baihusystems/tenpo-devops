@@ -80,8 +80,6 @@ $ cd jenkins-srv
 $ docker run -p 8080:8080 -p 50000:50000 jenkins/jenkins:lts
 ```
 
-### Plugins Jenkins
-...
 
 ### Jobs Jenkins
 - Jenkinsfile_build: Compila, genera contendor Docker y lo almacena en GCR
@@ -96,7 +94,10 @@ Definida con Terraform y GCP
 
 ```sh
 $ cd terraform
+#Actualice los valores en la siguiente ruta: tenpo-devops/terraform/terraform.tfvars
 $ terraform init
 $ terraform plan
 $ terraform apply
 ```
+
+
