@@ -91,7 +91,7 @@ $ docker run -p 8080:8080 -p 50000:50000 jenkins/jenkins:lts
 
 Todos los jobs contienen sus variables definidas dentro del codigo, las mismas pueden ser modificadas a decisión
 
-### Infraestructura
+### Infraestructura
 Definida con Terraform y GCP
 
 ```sh
