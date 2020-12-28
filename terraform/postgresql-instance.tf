@@ -1,5 +1,5 @@
 resource "google_sql_database_instance" "postgresql" {
-  name = "${var.app_name}-db2"
+  name = "${var.app_name}-db3"
   project = var.project_id
   region = var.region
   database_version = var.db_version

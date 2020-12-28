@@ -8,7 +8,7 @@ metadata:
 data:
   TENPO_SECRET: "1234567890"
   TENPO_PASSW_LEN: "5"
-  TENPO_DB_IP: "35.243.163.27"
+  TENPO_DB_IP: "104.196.212.225"
   TENPO_DB_USER: "dbadmin"
   TENPO_DB_PASSW: "6990fa3d0f29f885"
   TENPO_DB: "postgres"
