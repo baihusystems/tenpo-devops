@@ -63,3 +63,15 @@ exports.allAccess = (req, res) => {
             return res.status(404).send({ message: user });
         });
 };
+
+exports.logout = (req, res) => {
+    userToken.destroy({
+        where: {
+            token: req.headers["x-access-token"]
+        }
+    })
+    res.status(200).send({
+        message: "Sesión Cerrada"
+    });
+
+};

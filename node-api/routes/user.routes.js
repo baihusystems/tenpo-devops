@@ -20,6 +20,11 @@ module.exports = function(app) {
         controller.operation
     );
 
+    app.post(
+        "/api/auth/logout", [authJwt.verifyToken],
+        controller.logout
+    );
+
     app.get("/api/operationsList", controller.allAccess);
 
 };

@@ -24,6 +24,54 @@ $ npm install
 $ node server.js
 ```
 
+### Rutas
+|Tipo| Ruta | Descripción |
+|------| ------ | ------ |
+|POST| /api/auth/signup | Registro de Usuario |
+|POST| /api/auth/signin | Login de Usuario |
+|POST| /api/operations | Operaciones Usuario Loggeado |
+|GET| /api/operationsList | Listado de Operaciones |
+
+### /api/auth/signup (POST)
+```sh
+Body - Raw (JSON)
+{
+    "username": "NombreUsuario",
+    "password": "Contrasena"
+}
+```
+
+### /api/auth/signin (POST)
+```sh
+Body - Raw (JSON)
+{
+    "username": "NombreUsuario",
+    "password": "Contrasena"
+}
+```
+
+### /api/operations (POST)
+```sh
+Header
+x-access-token: TOKEN
+
+Body - Raw (JSON)
+{
+    "operacion": "suma",
+    "valores": ARRAY NUMERICO, Ej: [1,2,3,4,5,6,7,8,9]
+}
+```
+
+### /api/operationsList (GET)
+```sh
+Body - Raw (JSON)
+{
+    "username": "NombreUsuario"
+}
+```
+
+-----------------------------------
+
 Para instanciar un servidor Jenkins Local
 ```sh
 $ cd jenkins-srv
