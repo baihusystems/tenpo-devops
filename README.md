@@ -1,10 +1,7 @@
+# Tenpo-devops
+por Alberto Salazar
 
-# Tenpo-devops 
-> por **Alberto Salazar**
-
-
-
-### Tecnologias Utilizadas:
+Tecnologias Utilizadas:
   - NodeJs: API REST de Registro, acceso y operaciones 
   - Docker: Dockerizacion de Aplicacion API REST
   - Groovy: Pipelines de build, push, deploy, restart y shutdown
@@ -23,6 +20,7 @@ $ git clone https://github.com/baihusystems/tenpo-devops.git
 Si desea correr localmente la API
 ```sh
 $ cd node-api
+$ npm install
 $ node server.js
 ```
 
@@ -43,3 +41,12 @@ $ docker run -p 8080:8080 -p 50000:50000 jenkins/jenkins:lts
 
 Todos los jobs contienen sus variables definidas dentro del codigo, las mismas pueden ser modificadas a decisión
 
+### Infraestructura
+Definida con Terraform y GCP
+
+```sh
+$ cd terraform
+$ terraform init
+$ terraform plan
+$ terraform apply
+```

@@ -30,6 +30,8 @@ pipeline{
         choice(name: 'region', choices: ['us-east1'], description: 'Region')
         choice(name: 'namespace', choices: ['default'], description: 'Namespace')
         string (name:'appVersion', defaultValue: '1.0.0_11', description: 'App Version')
+        booleanParam (name:'DryRun', defaultValue: true, description: 'Dry Run')
+        booleanParam (name:'Deploy', defaultValue: false, description: 'Deploy App')
     }
 
     environment {

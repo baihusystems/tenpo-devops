@@ -1,5 +1,16 @@
 appName: "node-tenpo-api"
 imageSha: ""
+tenposecret: "1234567890"
+tenpopaswlen: "5"
+environment: "prod"
+
+db:
+  ip: "35.227.21.57"
+  user: "dbadmin"
+  passw: "6990fa3d0f29f885"
+  dbname: "postgres"
+
+
 lb:
   port: "8082"
   targetPort: "8082"

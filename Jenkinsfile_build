@@ -25,7 +25,7 @@ pipeline{
         string (name:'repoCredentials', defaultValue: 'tenpo-github-app', description: 'Credentials Repo')
         string (name:'branchName', defaultValue: 'main', description: 'Branch Checkout')
         string (name:'gcrProjectId', defaultValue: 'tenpo-299813', description: 'ID GCR Project')
-        string (name:'artifactID', defaultValue: 'node-tenpo', description: 'Artifact Name')
+        string (name:'artifactID', defaultValue: 'node-tenpo-api', description: 'Artifact Name')
     }
     stages{
         stage ("preparation"){
